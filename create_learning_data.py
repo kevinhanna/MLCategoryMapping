@@ -16,7 +16,7 @@ def get_factual_category( factual_id ):
         return []
 
 
-fieldnames = ("vtax","eid","ag_account","website", "company_name", "factual_category_ids")
+fieldnames = ("vtax","factual_id","ag_account","website", "company_name", "factual_category_ids")
 reader = csv.DictReader( csvfile, fieldnames)
 out = []
 
@@ -24,7 +24,7 @@ for row in reader:
     vtax = eval(row['vtax'])[0]
 
     if not row['factual_category_ids']:
-        tmp_factual_category_ids = get_factual_category( row['eid'] )
+        tmp_factual_category_ids = get_factual_category( row['factual_id'] )
         if tmp_factual_category_ids:
             factual_category_ids = tmp_factual_category_ids[0]
         else:
@@ -33,7 +33,7 @@ for row in reader:
     else:
         factual_category_ids = eval(row['factual_category_ids'])[0]
 
-    line = [vtax, row['eid'], row['ag_account'], row['website'], row['company_name'], factual_category_ids]
+    line = [vtax, row['factual_id'], row['ag_account'], row['website'], row['company_name'], factual_category_ids]
     print(line)
     out.append(line)
 
