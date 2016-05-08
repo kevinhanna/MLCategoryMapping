@@ -1,28 +1,21 @@
-import numpy as np
 import csv
 import json
-from sklearn.pipeline import Pipeline
+
+import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.svm import LinearSVC
-from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.naive_bayes import GaussianNB
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
 
-from sklearn.preprocessing import MultiLabelBinarizer
-
-
-
-training_data_csv = open('data/2000ActiveMapped.csv', 'r', encoding='utf-8', errors='ignore')
-factual_tax_json = open('data/factual_taxonomy.json')
-outfile = open('data/mapped_categories.csv', 'w')
+training_data_csv = open('data/factual_vtax_training_data.csv', 'r', encoding='utf-8', errors='ignore')
+factual_tax_json = open('data/factual_taxonomy.json', 'r')
+outfile = open('data/mapped_factual_categories.csv', 'w')
 
 
 fieldnames = ("vtax","eid","ag_account","website", "company_name", "factual_category_ids")
 training_data_reader = csv.DictReader(training_data_csv, fieldnames)
 
 factual_tax = json.load(factual_tax_json)
-
-#print(factual_tax["1"]["labels"]["en"])
 
 vtaxes = []
 fids = []
@@ -50,6 +43,7 @@ classifier = Pipeline([
 
 classifier.fit(X_train, y_train)
 
+
 predicted = classifier.predict(X_test)
 
 
@@ -63,3 +57,7 @@ for item, labels in zip(X_test, predicted):
 
 writer = csv.writer(outfile, quoting=csv.QUOTE_ALL)
 writer.writerows(out)
+
+
+from sklearn.externals import joblib
+joblib.dump(classifier, 'data/pickles/factualCategory.pkl', 6)
