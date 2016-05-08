@@ -2,8 +2,8 @@ import csv
 import factkey
 from factual import Factual
 
-csvfile = open('data/10ActiveFactual.csv', 'r', encoding='utf-8', errors='ignore')
-outfile = open('data/10ActiveFactualMapped.csv', 'w')
+csvfile = open('data/2000FinalFactual.csv', 'r', encoding='utf-8', errors='ignore')
+outfile = open('data/2000FinalFactualMapped.csv', 'w')
 
 factual = Factual(factkey.factual_key, factkey.factual_secret)
 
