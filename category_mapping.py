@@ -12,7 +12,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 
 
-training_data_csv = open('data/2000ActiveFactualOut.csv', 'r', encoding='utf-8', errors='ignore')
+training_data_csv = open('data/2000ActiveMapped.csv', 'r', encoding='utf-8', errors='ignore')
 factual_tax_json = open('data/factual_taxonomy.json')
 outfile = open('data/mapped_categories.csv', 'w')
 
