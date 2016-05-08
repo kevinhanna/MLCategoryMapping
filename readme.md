@@ -15,6 +15,8 @@ Source files:
     *  A file that can be used in place of or appended to factual_vtax_training_data.csv
 * category_mapping_from_pickle.py
   * Uses pickles/factualCategory.pkl to predict Factual Category using vTaxes
+* factkey.py (needs values to be set)
+  * Update this file by setting OAuth key and secret (found here after creating free account https://factual.com/keys)
 
 Data Files:
 * factual_vtax_training_data.csv
