@@ -36,7 +36,7 @@ for row in training_data_reader:
 
 X_train = np.array(vtaxes)
 y_train = fids
-X_test = unique_vtaxes
+X_test = sorted(unique_vtaxes)
 
 
 # Pipeline to vectorize text data and set classifier
