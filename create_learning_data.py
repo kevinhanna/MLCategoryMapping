@@ -5,6 +5,8 @@ from factual import Factual
 csvfile = open('data/2000FinalFactual.csv', 'r', encoding='utf-8', errors='ignore')
 outfile = open('data/2000FinalFactualMapped.csv', 'w')
 
+
+# Create factkey.py with factual_key and factual_secret set to values on https://factual.com/keys
 factual = Factual(factkey.factual_key, factkey.factual_secret)
 
 def get_factual_category( factual_id ):
