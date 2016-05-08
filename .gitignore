@@ -1,0 +1,28 @@
+
+
+.idea/
+data/mapped_categories.csv
+
+data/1000ActiveFactual.csv
+
+data/1000ActiveFactualOut copy.csv
+
+data/1000ActiveFactualOut.csv
+
+data/10ActiveFactual.csv
+
+data/10ActiveFactualOut.csv
+
+data/10ActiveMapped.csv
+
+data/2000ActiveFactualOut copy.csv
+
+data/5000MiscFactual.csv
+
+data/5000MiscFactualMapped.csv
+
+factual_test.py
+
+plot_multilabel.py
+
+test.py
