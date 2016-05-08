@@ -5,7 +5,15 @@ from sklearn.externals import joblib
 classifier = joblib.load('data/pickles/factualCategory.pkl')
 factual_tax_json = open('data/factual_taxonomy.json', 'r')
 
-vtax = ['active:bowling', 'active:skatingrinks', 'active:horsebackriding', 'food:grocery',  'financialservices:investing', 'foo']
+vtax = ['active:bowling',
+        'active:skatingrinks',
+        'active:horsebackriding',
+        'food:grocery',
+        'financialservices:investing',
+        'auto:boatdealers',
+        'food:pretzels',
+        'food:bagels',
+        'foo']
 
 factual_tax = json.load(factual_tax_json)
 

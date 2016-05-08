@@ -1,28 +1,13 @@
 
 
 .idea/
-data/mapped_categories.csv
-
-data/1000ActiveFactual.csv
-
-data/1000ActiveFactualOut copy.csv
-
-data/1000ActiveFactualOut.csv
-
-data/10ActiveFactual.csv
-
-data/10ActiveFactualOut.csv
-
-data/10ActiveMapped.csv
-
-data/2000ActiveFactualOut copy.csv
-
-data/5000MiscFactual.csv
-
-data/5000MiscFactualMapped.csv
+*.csv
+__pycache__/
 
 factual_test.py
-
 plot_multilabel.py
-
 test.py
+factkey.py
+
+!mapped_factual_categories.csv
+!factual_vtax_training_data.csv

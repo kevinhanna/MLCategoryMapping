@@ -1,12 +1,11 @@
 import csv
-
+import factkey
 from factual import Factual
 
-csvfile = open('data/5000MiscFactual.csv', 'r', encoding='utf-8', errors='ignore')
-outfile = open('data/5000MiscFactualMapped.csv', 'w')
+csvfile = open('data/10ActiveFactual.csv', 'r', encoding='utf-8', errors='ignore')
+outfile = open('data/10ActiveFactualMapped.csv', 'w')
 
-#https://factual.com/keys
-factual = Factual('foo', 'bar')
+factual = Factual(factkey.factual_key, factkey.factual_secret)
 
 def get_factual_category( factual_id ):
     try:
