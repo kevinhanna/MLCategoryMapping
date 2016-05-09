@@ -1,7 +1,7 @@
 import csv
 import json
 
-from simple_predictor import SimplePredictor
+from simple_classifier import SimplePredictor
 
 training_data_csv = open('data/factual_vtax_training_data.csv', 'r', encoding='utf-8', errors='ignore')
 business_names_csv = open('data/business_names.csv', 'r', encoding='utf-8', errors='ignore')

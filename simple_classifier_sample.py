@@ -1,4 +1,4 @@
-from simple_predictor import SimplePredictor
+from simple_classifier import SimplePredictor
 
 print("Running test 1")
 sample = [[2,1], [2,2], [1,1], [1,2]]
