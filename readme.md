@@ -28,7 +28,9 @@ Data Files:
 * [factual_vtax_training_data.csv](data/factual_vtax_training_data.csv)
   * Training input column 1 is the single feature used, and column 6 is the target
 * [mapped_factual_categories.csv](data/mapped_factual_categories.csv)
-  * Output, predicted, column 1 is the feature and column 2 is the predicted factual category ID, column 3 is Factual's English label for that ID
+  * Output, predicted, column 1 is the vtax (feature) and column 2 is the predicted factual category ID, column 3 is Factual's English label for that ID
+* [mapped_name_factual_categories.csv](data/mapped_name_factual_categories.csv)
+  * Output, predicted, column 1 is the name (feature) and column 2 is the predicted factual category ID, column 3 is Factual's English label for that ID
 * [business_names.csv](business_names.csv)
   * Business names not used for training
 * [factual_taxonomy.json](data/factual_taxonomy.json)
