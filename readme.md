@@ -8,8 +8,14 @@ Libraries:
 Source files:
 * [category_mapping.py](category_mapping.py)
   * Takes `factual_vtax_training_data.csv` and predicts mapping from vtax to Factual categories creating
-    *  mapped_`factual_categories.csv`
+    *  `mapped_factual_categories.csv`
     *  `pickles/factualCategory.pkl`
+* [name_category_mapping.py](name_category_mapping.py)
+  * Same as above, but maps using business names as well as vtax creating
+    *  `mapped_factual_categories.csv`
+    *  `mapped_name_factual_categories.csv`
+    *  `pickles/factualCategory.pkl`
+    *  `pickles/factualNameCategory.pkl`
 * [create_learning_data.py](create_learning_data.py)
   * Takes CSV output from `extract_factual.sql` (removing header row and all instances of "FACTUAL:") creating
     *  A file thats can be used in place of or appended to `factual_vtax_training_data.csv`
@@ -23,9 +29,13 @@ Data Files:
   * Training input column 1 is the single feature used, and column 6 is the target
 * [mapped_factual_categories.csv](data/mapped_factual_categories.csv)
   * Output, predicted, column 1 is the feature and column 2 is the predicted factual category ID, column 3 is Factual's English label for that ID
+* [business_names.csv](business_names.csv)
+  * Business names not used for training
 * [factual_taxonomy.json](data/factual_taxonomy.json)
   * Mapping of Factual's category ID's to their labels
 * [pickles/factualCategory.pkl](data/pickles/factualCategory.pkl)
-  * Model (training) persisted for future use without running training again
+  * Model (training) of vTax to Factual category persisted for future use without running training again
+* [pickles/factualNameCategory.pkl](data/pickles/factualNameCategory.pkl)
+  * Model (training) of business name to Factual category persisted for future use without running training again
 * [extract_factual.sql](data/extract_factual.sql)
   * BigQuery SQL to fetch agid.vtax and lis.eid along with some other columns for sanity checking to be used for input for `create_learning_data.py`
