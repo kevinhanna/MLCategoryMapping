@@ -22,7 +22,7 @@ Data Files:
 * [factual_vtax_training_data.csv](data/factual_vtax_training_data.csv)
   * Training input column 1 is the single feature used, and column 6 is the target
 * [mapped_factual_categories.csv](data/mapped_factual_categories.csv)
-  * Output, predicted, column 1 is the feature and column 2 is the predicted factual category  
+  * Output, predicted, column 1 is the feature and column 2 is the predicted factual category ID, column 3 is Factual's English label for that ID
 * [factual_taxonomy.json](data/factual_taxonomy.json)
   * Mapping of Factual's category ID's to their labels
 * [pickles/factualCategory.pkl](data/pickles/factualCategory.pkl)
