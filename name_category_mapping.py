@@ -88,7 +88,7 @@ print("Learning names")
 name_classifier = train(X_train_names, y_train)
 # 'predict' matching Factual category for name
 name_predicted = name_classifier.predict(test_names)
-format_write(X_test_names, name_predicted, name_outfile)
+format_write(test_names, name_predicted, name_outfile)
 
 
 # Predict and write vtaxes
