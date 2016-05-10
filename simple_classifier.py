@@ -1,10 +1,13 @@
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
 from sklearn.externals import joblib
+from sklearn.feature_extraction.text import TfidfTransformer
 
 class SimplePredictor:
 
@@ -46,7 +49,7 @@ class SimplePredictor:
             #TODO There's probably a more appropriate Exception type
             raise Exception('Training data and target data are of different lengths')
 
-        sample_data_np = self.__sample_data #np.array(sample_data) TODO is np.array better?
+        sample_data_np = self.__sample_data #np.array(self.__sample_data) TODO is np.array better?
 
 #TODO        if not self.__getClassifier():
         self.__setClassifier(self.__getPipeline(self.__sample_data))
@@ -66,12 +69,14 @@ class SimplePredictor:
 
         return self.getPredictor()
 
+
     def __getPipeline(self, sample_data):
         """
 
         :param sample_data:
         :return:
         """
+
 
         # to accept either a list of strings ['one', 'two', 'three'] or a list of lists [[1,2], [3,4]]
         if isinstance(sample_data[0], str):
