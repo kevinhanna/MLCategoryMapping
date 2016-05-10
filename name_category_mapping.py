@@ -72,7 +72,7 @@ y_train = fids
 print("Learning names")
 names_kevifier = SimplePredictor(X_train_names, y_train)
 # 'predict' matching Factual category for name
-name_predicted = names_kevifier.train(test_names)
+name_predicted = names_kevifier.predict(test_names)
 names_kevifier.dump('data/pickles/factualNameCategory.pkl')
 format_write(test_names, name_predicted, name_outfile)
 
@@ -80,6 +80,6 @@ format_write(test_names, name_predicted, name_outfile)
 print("Learning vtax")
 vtax_kevifier = SimplePredictor(X_train_vtaxes, y_train)
 # 'predict' matching Factual category for vtax
-vtax_predicted = vtax_kevifier.train(X_test_vtaxes)
+vtax_predicted = vtax_kevifier.predict(X_test_vtaxes)
 vtax_kevifier.dump('data/pickles/factualCategory.pkl')
 format_write(X_test_vtaxes, vtax_predicted, vtax_outfile)

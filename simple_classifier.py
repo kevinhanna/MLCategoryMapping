@@ -1,26 +1,32 @@
-import numpy as np
+import pickle
+
+from sklearn.externals import joblib
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction import DictVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
-from sklearn.externals import joblib
-from sklearn.feature_extraction.text import TfidfTransformer
 
 class SimplePredictor:
 
 
-    def __init__(self, sample_data, target_classifications):
+    def __init__(self, sample_data=None, target_classifications=None, pickle=None, file_dump_path=None):
         """
         
         :param sample_data: Iterable of sample features (samples)
         :param target_classifications: Iterable of target (expected classification from sample_data samples) classifications
         """
-        self.__sample_data = sample_data
-        self.__target_classifications = target_classifications
-#        self.__to_predict = to_predict
+        if sample_data and target_classifications:
+            self.__sample_data = sample_data
+            self.__target_classifications = target_classifications
+            self.__train()
+        elif pickle:
+            self.__unpickle(pickle)
+        elif file_dump_path:
+            self.__load(file_dump_path)
+        else:
+            raise Exception("WTF?")
+
 
     def __getClassifier(self):
         return self.__classifier
@@ -35,7 +41,7 @@ class SimplePredictor:
         self.__predictor = predictor
 
 
-    def train(self, to_predict):
+    def __train(self):
         """
         Creates mapping from sample_data (features) to target_classifications (classes) and then predicts target_classifications values for to_predict
         - sample_data and target_classifications need to be same length
@@ -57,10 +63,12 @@ class SimplePredictor:
         # Fit to data
         self.__getClassifier().fit(sample_data_np, self.__target_classifications)
 
-        return self.__predict(to_predict)
+        #return self.__setPredictor(self.__getClassifier().predict(to_predict))
+
+#        return self.predict(to_predict)
 
 
-    def __predict(self, test_data):
+    def predict(self, test_data):
         if not self.__classifier:
             #TODO There's probably a more appropriate Exception type
             raise Exception("Must run train before calling predict")
@@ -76,7 +84,6 @@ class SimplePredictor:
         :param sample_data:
         :return:
         """
-
 
         # to accept either a list of strings ['one', 'two', 'three'] or a list of lists [[1,2], [3,4]]
         if isinstance(sample_data[0], str):
@@ -96,3 +103,11 @@ class SimplePredictor:
     def dump(self, target):
         joblib.dump(self.__getClassifier(), target, 6)
 
+    def __load(self, path):
+        self.__setClassifier(joblib.load('path'))
+
+    def pickle(self):
+        return pickle.dumps(self.__getClassifier())
+
+    def __unpickle(self, foo_pickle):
+        self.__setClassifier(pickle.loads(foo_pickle))
