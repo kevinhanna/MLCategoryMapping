@@ -70,6 +70,6 @@ def test4(simpleClassifier):
 
 simpleClassifier1 = test1()
 simpleClassifier2 = test2()
-# not yet implemented simpleClassifier3 = test3()
+#simpleClassifier3 = test3()
 
 simpleClassifier4 = test4(simpleClassifier1)

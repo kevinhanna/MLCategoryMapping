@@ -1,5 +1,5 @@
 import pickle
-
+import numpy as np
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.multiclass import OneVsRestClassifier
@@ -16,7 +16,11 @@ class SimplePredictor:
         :param sample_data: Iterable of sample features (samples)
         :param target_classifications: Iterable of target (expected classification from sample_data samples) classifications
         """
-        if sample_data and target_classifications:
+        if isinstance(sample_data, np.ndarray):
+             print(len(sample_data))
+
+        if (isinstance(sample_data, np.ndarray) or sample_data) and \
+                (isinstance(target_classifications, np.ndarray) or target_classifications):
             self.__sample_data = sample_data
             self.__target_classifications = target_classifications
             self.__train()
@@ -47,7 +51,6 @@ class SimplePredictor:
         - sample_data and target_classifications need to be same length
         - to_predict should have similar data as sample_data
 
-        :param to_predict:  Iterable of items to predict classification, these must be of the same type as sample_data
         :return: Iterable of predicted classifications for each to_predict
         """
 
@@ -57,15 +60,11 @@ class SimplePredictor:
 
         sample_data_np = self.__sample_data #np.array(self.__sample_data) TODO is np.array better?
 
-#TODO        if not self.__getClassifier():
         self.__setClassifier(self.__getPipeline(self.__sample_data))
 
         # Fit to data
         self.__getClassifier().fit(sample_data_np, self.__target_classifications)
 
-        #return self.__setPredictor(self.__getClassifier().predict(to_predict))
-
-#        return self.predict(to_predict)
 
 
     def predict(self, test_data):
@@ -85,13 +84,23 @@ class SimplePredictor:
         :return:
         """
 
-        # to accept either a list of strings ['one', 'two', 'three'] or a list of lists [[1,2], [3,4]]
         if isinstance(sample_data[0], str):
+            # list of strings ['one', 'two', 'three']
+
             # Pipeline to vectorize text data and set classifier
             pipeline = Pipeline([
                 ('vectorizer', CountVectorizer()),
                 ('clf', OneVsRestClassifier(LinearSVC()))])
-        elif hasattr(sample_data[0], '__iter__'):
+        elif hasattr(sample_data[0], '__iter__') and isinstance(sample_data[0][0], int):
+            # list of lists of ints [[1,2], [3,4]]
+
+            # Pipeline to set classifier
+            pipeline = Pipeline([
+                ('clf', OneVsRestClassifier(LinearSVC()))])
+        elif hasattr(sample_data[0], '__iter__') and isinstance(sample_data[0][0], str):
+            # list of lists of ints [[1,2], [3,4]]
+
+            raise Exception("Not yet implemented")
             # Pipeline to set classifier
             pipeline = Pipeline([
                 ('clf', OneVsRestClassifier(LinearSVC()))])
