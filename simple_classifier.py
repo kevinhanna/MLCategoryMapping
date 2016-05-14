@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.multiclass import OneVsRestClassifier
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
@@ -84,6 +85,10 @@ class SimplePredictor:
         :return:
         """
 
+        print("Iter %s" % hasattr(sample_data[0], '__iter__'))
+
+        print("0 0 %s" % type(sample_data[0][0]))
+
         if isinstance(sample_data[0], str):
             # list of strings ['one', 'two', 'three']
 
@@ -91,7 +96,7 @@ class SimplePredictor:
             pipeline = Pipeline([
                 ('vectorizer', CountVectorizer()),
                 ('clf', OneVsRestClassifier(LinearSVC()))])
-        elif hasattr(sample_data[0], '__iter__') and isinstance(sample_data[0][0], int):
+        elif hasattr(sample_data[0], '__iter__') and (isinstance(sample_data[0][0], int) or (isinstance(sample_data[0][0], np.int64))):
             # list of lists of ints [[1,2], [3,4]]
 
             # Pipeline to set classifier
@@ -100,10 +105,11 @@ class SimplePredictor:
         elif hasattr(sample_data[0], '__iter__') and isinstance(sample_data[0][0], str):
             # list of lists of ints [[1,2], [3,4]]
 
-            raise Exception("Not yet implemented")
+            #raise Exception("Not yet implemented")
             # Pipeline to set classifier
             pipeline = Pipeline([
-                ('clf', OneVsRestClassifier(LinearSVC()))])
+                ('vectorizer', CountVectorizer()),
+                ('clf', MultinomialNB())])
         else:
             raise Exception("Unable to use types stored in sample_data:" + type(sample_data))
 

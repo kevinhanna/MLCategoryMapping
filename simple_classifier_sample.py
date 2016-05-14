@@ -47,10 +47,15 @@ def test3():
     a = np.array(scs.car_eval_data)
     sample3 = a[:, 0:6]
     classifications3 = a[:, 6]
-    test3 = a[1000:, 6]
+    test3 = a[1000:, 0:6]
+    actuals = a[1000:, 6:7]
+
     simpleClassifier3 = SimplePredictor(sample_data=sample3, target_classifications=classifications3)
 
-    print("Test 3: %s" % simpleClassifier3.predict(test3))
+    results = simpleClassifier3.predict(test3)
+
+    for result, actual in zip(results, actuals):
+        print("%s == %s is %s" % (result, actual[0], (result == actual)))
 
     return simpleClassifier3
 
@@ -68,8 +73,8 @@ def test4(simpleClassifier):
     return simpleClassifier4
 
 
-simpleClassifier1 = test1()
-simpleClassifier2 = test2()
-#simpleClassifier3 = test3()
+#simpleClassifier1 = test1()
+#simpleClassifier2 = test2()
+simpleClassifier3 = test3()
 
-simpleClassifier4 = test4(simpleClassifier1)
+#simpleClassifier4 = test4(simpleClassifier1)
