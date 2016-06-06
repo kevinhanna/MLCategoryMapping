@@ -62,6 +62,8 @@ def test4(simpleClassifier):
     sc_pickle = simpleClassifier.pickle()
     simpleClassifier4 = SimplePredictor(pickle=sc_pickle)
 
+    print("Pickle: %s" % sc_pickle)
+
     print("Test 4.1: %s" % simpleClassifier4.predict(test4))
     print("Test 4.2: %s" % simpleClassifier4.predict([[0,1]]))
 
