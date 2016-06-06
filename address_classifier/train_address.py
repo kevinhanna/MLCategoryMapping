@@ -23,10 +23,14 @@ def translate(type_id):
     }
     return switcher.get(type_id)
 
+def normalize_address(address):
+    address = address.lower().replace('.', '').replace('-', ' ').replace('#', '')
+    return address
+
+
 def indentify_tokens(address):
 
-    address = address.replace('.', '').replace('-', ' ').replace('#', '')
-    tokens = address.lower().split()
+    tokens = normalize_address(address).split()
 
     result = []
 
@@ -164,22 +168,26 @@ classifier_7 = SimplePredictor(sample_data=sample, target_classifications=classi
 
 
 for address in test_addresses:
+    tokened_address = indentify_tokens(address[0])
+    split = normalize_address(address[0]).split()
+    split = split+[0]*(MAX_TOKENS-len(split))
+
     # predited_1 = translate(classifier_1.predict([address[1]])[0])
-    predited_1 = translate(classifier_1.predict([indentify_tokens(address[0])])[0])
-    predited_2 = translate(classifier_2.predict([indentify_tokens(address[0])])[0])
-    predited_3 = translate(classifier_3.predict([indentify_tokens(address[0])])[0])
-    predited_4 = translate(classifier_4.predict([indentify_tokens(address[0])])[0])
-    predited_5 = translate(classifier_5.predict([indentify_tokens(address[0])])[0])
-    predited_6 = translate(classifier_6.predict([indentify_tokens(address[0])])[0])
-    predited_7 = translate(classifier_7.predict([indentify_tokens(address[0])])[0])
+    predited_1 = translate(classifier_1.predict([tokened_address])[0])
+    predited_2 = translate(classifier_2.predict([tokened_address])[0])
+    predited_3 = translate(classifier_3.predict([tokened_address])[0])
+    predited_4 = translate(classifier_4.predict([tokened_address])[0])
+    predited_5 = translate(classifier_5.predict([tokened_address])[0])
+    predited_6 = translate(classifier_6.predict([tokened_address])[0])
+    predited_7 = translate(classifier_7.predict([tokened_address])[0])
 
     # print('Address: %s, %s %s %s %s %s %s %s ' % (address[0], predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
     print('Address: %s' % (address[0]))
-    print('\t1: %s' % (predited_1))
-    print('\t2: %s' % (predited_2))
-    print('\t3: %s' % (predited_3))
-    print('\t4: %s' % (predited_4))
-    print('\t5: %s' % (predited_5))
-    print('\t6: %s' % (predited_6))
-    print('\t7: %s' % (predited_7))
+    print('\t%s: %s' % (split[0], predited_1))
+    print('\t%s: %s' % (split[1], predited_2))
+    print('\t%s: %s' % (split[2], predited_3))
+    print('\t%s: %s' % (split[3], predited_4))
+    print('\t%s: %s' % (split[4], predited_5))
+    print('\t%s: %s' % (split[5], predited_6))
+    print('\t%s: %s' % (split[6], predited_7))
 
