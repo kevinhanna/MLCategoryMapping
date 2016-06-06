@@ -2,7 +2,7 @@ from simple_classifier import SimplePredictor
 
 MAX_TOKENS = 7
 
-STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd'
+STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'trail'
 SUITE_INDICATOR_TYPES = 'suite', 'ste', '#', 'apt'
 STREET_DIRECTIONS = 'n', 'e', 's', 'w', \
                     'north', 'east', 'south', 'west', \
@@ -25,8 +25,7 @@ def translate(type_id):
 
 def indentify_tokens(address):
 
-    address = address.replace('.', '').replace('-', ' ')
-
+    address = address.replace('.', '').replace('-', ' ').replace('#', '')
     tokens = address.lower().split()
 
     result = []
@@ -104,28 +103,34 @@ training_addresses = [
      ],
     ["Ste. 123 345 7th St E",
      [SUITE_INDICATOR, SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY],
+     ],
+    ["123-345 Seventh St E",
+     [SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY, EMPTY]
      ]
 
 ]
 
 
 test_addresses = [
-    ["9416 HIGHWAY 6 LOOP", [NUMERIC_STRING, ALPHA_STRING, NUMERIC_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["8400 E Crescent Pkwy Ste 250", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, SUITE_INDICATOR, ALPHA_STRING, EMPTY]],
-    ["400 Mack Avenue", [NUMERIC_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY]],
-    ["222 S Herlong Ave", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["1526 Cortelyou Rd", [NUMERIC_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY]],
-    ["417 N Wilson St", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["635 S Ellis St", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["N80W14962 Appleton Ave", [ALPHA_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY]],
-    ["800 Park Boulevard Ste 790", [NUMERIC_STRING, ALPHA_STRING, STREET_TYPE, SUITE_INDICATOR, NUMERIC_STRING, EMPTY, EMPTY]],
-    ["102 S Broadway", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["2720 Lake Wheeler Road, Suite 125", [NUMERIC_STRING, ALPHA_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["2110 W 2nd St", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["1104 Lockwood ln", [NUMERIC_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY]],
-    ["9215 SW Canyon Rd.", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]],
-    ["4642 West Market St. Suite 155", [NUMERIC_STRING, STREET_DIRECTION, ALPHA_STRING, STREET_TYPE, SUITE_INDICATOR, NUMERIC_STRING, EMPTY]],
-    ["2600 Hitching Post Trail", [NUMERIC_STRING, ALPHA_STRING, ALPHA_STRING, STREET_TYPE, EMPTY, EMPTY, EMPTY]]
+    ["9416 HIGHWAY 6 LOOP"],
+    ["8400 E Crescent Pkwy Ste 250"],
+    ["400 Mack Avenue"],
+    ["222 S Herlong Ave"],
+    ["1526 Cortelyou Rd"],
+    ["417 N Wilson St"],
+    ["635 S Ellis St"],
+    ["N80W14962 Appleton Ave"],
+    ["800 Park Boulevard Ste 790"],
+    ["102 S Broadway"],
+    ["2720 Lake Wheeler Road, Suite 125"],
+    ["2110 W 2nd St"],
+    ["1104 Lockwood ln"],
+    ["9215 SW Canyon Rd."],
+    ["4642 West Market St. Suite 155"],
+    ["2600 Hitching Post Trail"],
+    ["Ste. #123 345 7th St E"],
+    ["#405-220 3rd Avenue South"],
+    ["#405 - 220 3rd Avenue South"]
 ]
 
 sample = []
@@ -159,13 +164,14 @@ classifier_7 = SimplePredictor(sample_data=sample, target_classifications=classi
 
 
 for address in test_addresses:
-    predited_1 = translate(classifier_1.predict([address[1]])[0])
-    predited_2 = translate(classifier_2.predict([address[1]])[0])
-    predited_3 = translate(classifier_3.predict([address[1]])[0])
-    predited_4 = translate(classifier_4.predict([address[1]])[0])
-    predited_5 = translate(classifier_5.predict([address[1]])[0])
-    predited_6 = translate(classifier_6.predict([address[1]])[0])
-    predited_7 = translate(classifier_7.predict([address[1]])[0])
+    # predited_1 = translate(classifier_1.predict([address[1]])[0])
+    predited_1 = translate(classifier_1.predict([indentify_tokens(address[0])])[0])
+    predited_2 = translate(classifier_2.predict([indentify_tokens(address[0])])[0])
+    predited_3 = translate(classifier_3.predict([indentify_tokens(address[0])])[0])
+    predited_4 = translate(classifier_4.predict([indentify_tokens(address[0])])[0])
+    predited_5 = translate(classifier_5.predict([indentify_tokens(address[0])])[0])
+    predited_6 = translate(classifier_6.predict([indentify_tokens(address[0])])[0])
+    predited_7 = translate(classifier_7.predict([indentify_tokens(address[0])])[0])
 
     # print('Address: %s, %s %s %s %s %s %s %s ' % (address[0], predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
     print('Address: %s' % (address[0]))
