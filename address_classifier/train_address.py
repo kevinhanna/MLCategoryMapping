@@ -79,8 +79,13 @@ def indentify_tokens(address):
 def __pad_to_max(list):
     return list+[EMPTY]*(MAX_TOKENS-len(list))
 
+def __pretty_print(results):
+    ret = "["
+    for result in results:
+        ret = ret + get_token_name(result) + ", "
+    ret = ret + "]"
 
-
+    return ret
 
 
 #Address, sample, classification
@@ -184,7 +189,38 @@ test_addresses = [
     "9275 Sw 152nd St # 206",
     "3328 Washington Road Suite D",
     "18579 Us Route 11",
-    # "123 Four Five St. Building F suite 5"
+    # "123 Four Five St. Building F suite 5",
+    "222 US-70",
+]
+
+expected_results = [
+    [STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, EMPTY, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
+    [SUITE_INDICATOR, SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY],
+    [SUITE, STREET_NAME, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY, EMPTY],
+    [SUITE, STREET_NAME, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY, EMPTY],
+    [SUITE, STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_TYPE, SUITE_INDICATOR, SUITE, SUITE, EMPTY],
+    [STREET_NUMBER, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
+    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, EMPTY, EMPTY, EMPTY, EMPTY],
 ]
 
 sample = []
@@ -198,9 +234,9 @@ classification_7 = []
 
 # Train for each position
 for address in training_addresses:
-
-    sample.append(indentify_tokens(address[0]))
-
+    tokens = indentify_tokens(address[0])
+    sample.append(tokens)
+    print('%s - %s - %s' % (tokens, address[1], address[0]))
     classification_1.append(address[1][0])
     classification_2.append(address[1][1])
     classification_3.append(address[1][2])
@@ -218,7 +254,7 @@ classifier_6 = SimplePredictor(sample_data=sample, target_classifications=classi
 classifier_7 = SimplePredictor(sample_data=sample, target_classifications=classification_7)
 
 
-for address in test_addresses:
+for address, expected in zip(test_addresses, expected_results):
     tokened_address = indentify_tokens(address)
     split = normalize_address(address).split()
     split = __pad_to_max(split)
@@ -233,6 +269,8 @@ for address in test_addresses:
     predited_7 = get_token_name(classifier_7.predict([tokened_address])[0])
 
     # print('Address: %s, %s %s %s %s %s %s %s ' % (address[0], predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
+    print("[%s, %s, %s, %s, %s, %s, %s]," % (predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
+    print(__pretty_print(expected))
     print('Address: %s' % (address))
     print('\t%s: %s' % (split[0], predited_1))
     print('\t%s: %s' % (split[1], predited_2))
