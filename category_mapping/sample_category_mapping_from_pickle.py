@@ -2,8 +2,8 @@ import json
 
 from sklearn.externals import joblib
 
-classifier = joblib.load('data/pickles/factualCategory.pkl')
-factual_tax_json = open('data/factual_taxonomy.json', 'r')
+classifier = joblib.load('category_mapping/data/pickles/factualCategory.pkl')
+factual_tax_json = open('category_mapping/data/factual_taxonomy.json', 'r')
 
 vtax = ['active:bowling',
         'active:skatingrinks',

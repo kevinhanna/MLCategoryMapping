@@ -3,11 +3,11 @@ import json
 
 from simple_classifier import SimplePredictor
 
-training_data_csv = open('data/factual_vtax_training_data.csv', 'r', encoding='utf-8', errors='ignore')
-business_names_csv = open('data/business_names.csv', 'r', encoding='utf-8', errors='ignore')
-factual_tax_json = open('data/factual_taxonomy.json', 'r')
-name_outfile = open('data/mapped_name_factual_categories.csv', 'w')
-vtax_outfile = open('data/mapped_factual_categories.csv', 'w')
+training_data_csv = open('category_mapping/data/factual_vtax_training_data.csv', 'r', encoding='utf-8', errors='ignore')
+business_names_csv = open('category_mapping/data/business_names.csv', 'r', encoding='utf-8', errors='ignore')
+factual_tax_json = open('category_mapping/data/factual_taxonomy.json', 'r')
+name_outfile = open('category_mapping/data/mapped_name_factual_categories.csv', 'w')
+vtax_outfile = open('category_mapping/data/mapped_factual_categories.csv', 'w')
 
 # Training data
 fieldnames = ("vtax","factual_id","ag_account","website", "company_name", "factual_category_ids")
