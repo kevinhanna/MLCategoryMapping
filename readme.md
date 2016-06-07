@@ -6,11 +6,12 @@ Libraries:
 * scikit-learn 0.17.1 (sklearn 0.0??)
 
 Source files:
-*Addresses*
+
+**Addresses**
 * [address_classifier/train_address.py](address_classifier/train_address.py)
   * Trains using addresses that are tokenized and each token is assigned a type
 
-*Categories*
+**Categories**
 * [category_mapping/category_mapping.py](category_mapping/category_mapping.py)
   * Takes `factual_vtax_training_data.csv` and predicts mapping from vtax to Factual categories creating
     *  `mapped_factual_categories.csv`
