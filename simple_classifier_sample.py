@@ -47,8 +47,9 @@ def test3():
     a = np.array(scs.car_eval_data)
     sample3 = a[:, 0:6]
     classifications3 = a[:, 6]
-    test3 = a[1000:, 0:6]
-    actuals = a[1000:, 6:7]
+
+    test3 = a[200:400, 0:6]
+    actuals = a[200:400, 6:7]
 
     simpleClassifier3 = SimplePredictor(sample_data=sample3, target_classifications=classifications3)
 

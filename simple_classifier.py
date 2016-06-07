@@ -85,10 +85,6 @@ class SimplePredictor:
         :return:
         """
 
-        print("Iter %s" % hasattr(sample_data[0], '__iter__'))
-
-        print("0 0 %s" % type(sample_data[0][0]))
-
         if isinstance(sample_data[0], str):
             # list of strings ['one', 'two', 'three']
 

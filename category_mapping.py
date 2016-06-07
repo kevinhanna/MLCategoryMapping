@@ -27,8 +27,8 @@ out = []
 for row in training_data_reader:
     # If the Factual Category is missing skip the row
     if row['factual_category_ids']:
-        vtax = row['vtax']
-        fid = row['factual_category_ids']
+        fid = row['vtax']
+        vtax = row['factual_category_ids']
 
         vtaxes.append(vtax)
         fids.append(fid)
@@ -51,13 +51,15 @@ classifier.fit(X_train, y_train)
 predicted = classifier.predict(X_test)
 
 
-print(predicted)
-print(X_test)
+#print(predicted)
+#print(X_test)
 
 for item, labels in zip(X_test, predicted):
-    tmp_fid = factual_tax[str(labels)]["labels"]["en"]
+#    tmp_fid = factual_tax[str(labels)]["labels"]["en"]
+#    out.append([item, labels, tmp_fid])
+    tmp_fid = factual_tax[str(item)]["labels"]["en"]
     out.append([item, labels, tmp_fid])
-    print('%s => %s - %s' % (item, labels, tmp_fid))
+    print('%s => %s - %s' % (tmp_fid, labels, item))
 
 writer = csv.writer(outfile, quoting=csv.QUOTE_ALL)
 writer.writerows(out)
