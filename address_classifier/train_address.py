@@ -1,227 +1,15 @@
 from simple_classifier import SimplePredictor
+from address_classifier.address_dao import AddressDao
 
-MAX_TOKENS = 7
+import address_classifier.address_util as au
 
-STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'trail', 'blvd'
-
-SUITE_INDICATOR_TYPES = 'suite', 'ste', '#', 'apt'
-
-STREET_DIRECTIONS = 'n', 'e', 's', 'w', \
-                    'north', 'east', 'south', 'west', \
-                    'ne', 'nw', 'se', 'sw', \
-                    'north east', 'north west', 'south east', 'south west'
-
-HIGHWAY_NAMES = 'us', 'highway', 'hwy', 'state', 'route'
-
-# Token types
-EMPTY = 0
-STREET_NUMBER = 1
-STREET_NAME = 2
-HIGHWAY_NAME = 3
-STREET_DIRECTION = 4
-STREET_TYPE = 5
-SUITE_INDICATOR = 6
-SUITE = 7
-
-ALPHA_STRING = 20
-NUMERIC_STRING = 21
-
-ADDRESS_TOKEN_TYPES = {
-    EMPTY: "EMPTY",
-    STREET_NUMBER: "STREET_NUMBER",
-    STREET_NAME: "STREET_NAME",
-    HIGHWAY_NAME: "HIGHWAY_NAME",
-    STREET_DIRECTION: "STREET_DIRECTION",
-    STREET_TYPE: "STREET_TYPE",
-    SUITE_INDICATOR: "SUITE_INDICATOR",
-    SUITE: "SUITE",
-    ALPHA_STRING: "ALPHA_STRING",
-    NUMERIC_STRING: "NUMERIC_STRING",
-}
-
-
-def get_token_name(type_id):
-    return ADDRESS_TOKEN_TYPES.get(type_id)
-
-def get_token_id(type_name):
-    for id, name in ADDRESS_TOKEN_TYPES.items():
-        if (name == type_name):
-            return id;
-    return None
-
-def normalize_address(address):
-    address = address.lower().replace('.', '').replace('-', ' ').replace('#', '').replace('.', '')
-    return address
-
-
-def indentify_tokens(address):
-
-    tokens = normalize_address(address).split()
-
-    result = []
-
-    for token in tokens:
-        if (token in STREET_TYPES):
-            result.append(STREET_TYPE)
-        elif (token in HIGHWAY_NAMES):
-            result.append(HIGHWAY_NAME)
-        elif (token in SUITE_INDICATOR_TYPES):
-            result.append(SUITE_INDICATOR)
-        elif (token.isdigit()):
-            result.append(NUMERIC_STRING)
-        elif(token in STREET_DIRECTIONS):
-            result.append(STREET_DIRECTION)
-        else:
-            result.append(ALPHA_STRING)
-
-    return __pad_to_max(result)
-
-def __pad_to_max(list):
-    return list+[EMPTY]*(MAX_TOKENS-len(list))
-
-def __pretty_print(results):
-    ret = "["
-    for result in results:
-        ret = ret + get_token_name(result) + ", "
-    ret = ret + "]"
-
-    return ret
-
-
-#Address, sample, classification
-training_addresses = [
-    ["East IGNORE Street 801, Suite 8 Building",
-     [STREET_DIRECTION, STREET_NAME, STREET_TYPE, STREET_NUMBER, SUITE_INDICATOR, NUMERIC_STRING, ALPHA_STRING],
-     ], # Dummy to get around bug
-    ["801 East Orange Street",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE],
-     ],
-    ["7111 E McDowell Rd",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE],
-     ],
-    ["995 W Haynes Rd",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE],
-     ],
-    ["1037 Vermont Street",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE],
-     ],
-    ["511 Calhoun Street",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE],
-     ],
-    ["1201 Harvey Road",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE],
-     ],
-    ["6614 Wisteria Drive",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE],
-     ],
-    ["13 Morin Street",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE],
-     ],
-    ["1307 U.S. 1",
-     [STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME],
-     ],
-    ["1307 State Route 1",
-     [STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME],
-     ],
-    ["2401 E 6th St Ste 3033",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE],
-     ],
-    ["2727 Enterprise Parkway, Suite 200",
-     [STREET_NUMBER, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE],
-     ],
-    ["568 Eeast Harbor St. Suite 302",
-     [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE],
-     ],
-    ["568 Eeast Harbor St.",
-     [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE],
-     ],
-    ["Ste. 123 345 7th St E",
-     [SUITE_INDICATOR, SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION],
-     ],
-    ["123-345 Seventh St E",
-     [SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION]
-     ],
-    ["9416 HIGHWAY 6 LOOP",
-     [STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME]
-     ],
-    ["7080 W State Road 84 # 10",
-     [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME]
-     ],
-    ["7080 W State Road 84",
-     [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME]
-    ],
-    ["9436 W Lake Mead Blvd, #11F",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE]
-     ],
-    ["9436 W Lake Mead Blvd, Suite 11F",
-     [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE]
-    ]
-]
+adao = AddressDao()
+training_addresses = adao.get_training_addresses("US")
 
 for address in training_addresses:
-    address[1] = __pad_to_max(address[1])
+    address[1] = au.pad_to_max(address[1])
 
-
-test_addresses = [
-    "9416 HIGHWAY 6 LOOP",
-    "8400 E Crescent Pkwy Ste 250",
-    "400 Mack Avenue",
-    "222 S Herlong Ave",
-    "1526 Cortelyou Rd",
-    "417 N Wilson St",
-    "635 S Ellis St",
-    "N80W14962 Appleton Ave",
-    "800 Park Boulevard Ste 790",
-    "102 S Broadway",
-    "2720 Lake Wheeler Road, Suite 125",
-    "2110 W 2nd St",
-    "1104 Lockwood ln",
-    "9215 SW Canyon Rd.",
-    "4642 West Market St. Suite 155",
-    "2600 Hitching Post Trail",
-    "Ste. #123 345 7th St E",
-    "#405-220 3rd Avenue South",
-    "#405 - 220 3rd Avenue South",
-    "6835 Dayton Springfield Road",
-    "9436 W Lake Mead Blvd, #11F",
-    "7080 W State Road 84 # 10",
-    "7080 W State Road 84",
-    "9275 Sw 152nd St # 206",
-    "3328 Washington Road Suite D",
-    "18579 Us Route 11",
-    # "123 Four Five St. Building F suite 5",
-    "222 US-70",
-]
-
-expected_results = [
-    [STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, EMPTY, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_NAME, STREET_TYPE, EMPTY, EMPTY, EMPTY],
-    [SUITE_INDICATOR, SUITE, STREET_NUMBER, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY],
-    [SUITE, STREET_NAME, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY, EMPTY],
-    [SUITE, STREET_NAME, STREET_NAME, STREET_TYPE, STREET_DIRECTION, EMPTY, EMPTY],
-    [SUITE, STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, HIGHWAY_NAME, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_TYPE, SUITE_INDICATOR, SUITE, SUITE, EMPTY],
-    [STREET_NUMBER, STREET_NAME, STREET_TYPE, SUITE_INDICATOR, SUITE, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_NUMBER, HIGHWAY_NAME, HIGHWAY_NAME, EMPTY, EMPTY, EMPTY],
-    [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, EMPTY, EMPTY, EMPTY, EMPTY],
-]
+test_addresses = adao.get_testing_addresses("US", 10)
 
 sample = []
 classification_1 = []
@@ -234,9 +22,9 @@ classification_7 = []
 
 # Train for each position
 for address in training_addresses:
-    tokens = indentify_tokens(address[0])
+    tokens = au.indentify_tokens(address[0])
     sample.append(tokens)
-    print('%s - %s - %s' % (tokens, address[1], address[0]))
+    print('%s\n%s\n%s' % (au.pretty_print(tokens), au.pretty_print(address[1]), address[0]))
     classification_1.append(address[1][0])
     classification_2.append(address[1][1])
     classification_3.append(address[1][2])
@@ -254,24 +42,23 @@ classifier_6 = SimplePredictor(sample_data=sample, target_classifications=classi
 classifier_7 = SimplePredictor(sample_data=sample, target_classifications=classification_7)
 
 
-for address, expected in zip(test_addresses, expected_results):
-    tokened_address = indentify_tokens(address)
-    split = normalize_address(address).split()
-    split = __pad_to_max(split)
+for address in test_addresses:
+    tokened_ag_address = au.indentify_tokens(address[1])
+    split = au.normalize_address(address[1]).split()
+    split = au.pad_to_max(split)
 
     # predited_1 = get_token_name(classifier_1.predict([address[1]])[0])
-    predited_1 = get_token_name(classifier_1.predict([tokened_address])[0])
-    predited_2 = get_token_name(classifier_2.predict([tokened_address])[0])
-    predited_3 = get_token_name(classifier_3.predict([tokened_address])[0])
-    predited_4 = get_token_name(classifier_4.predict([tokened_address])[0])
-    predited_5 = get_token_name(classifier_5.predict([tokened_address])[0])
-    predited_6 = get_token_name(classifier_6.predict([tokened_address])[0])
-    predited_7 = get_token_name(classifier_7.predict([tokened_address])[0])
+    predited_1 = au.get_token_name(classifier_1.predict([tokened_ag_address])[0])
+    predited_2 = au.get_token_name(classifier_2.predict([tokened_ag_address])[0])
+    predited_3 = au.get_token_name(classifier_3.predict([tokened_ag_address])[0])
+    predited_4 = au.get_token_name(classifier_4.predict([tokened_ag_address])[0])
+    predited_5 = au.get_token_name(classifier_5.predict([tokened_ag_address])[0])
+    predited_6 = au.get_token_name(classifier_6.predict([tokened_ag_address])[0])
+    predited_7 = au.get_token_name(classifier_7.predict([tokened_ag_address])[0])
 
     # print('Address: %s, %s %s %s %s %s %s %s ' % (address[0], predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
     print("[%s, %s, %s, %s, %s, %s, %s]," % (predited_1, predited_2, predited_3, predited_4, predited_5, predited_6, predited_7))
-    print(__pretty_print(expected))
-    print('Address: %s' % (address))
+    print('Address: %s' % (address[1]))
     print('\t%s: %s' % (split[0], predited_1))
     print('\t%s: %s' % (split[1], predited_2))
     print('\t%s: %s' % (split[2], predited_3))
