@@ -1,7 +1,6 @@
+MAX_TOKENS = 10
 
-MAX_TOKENS = 7
-
-STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'trail', 'blvd'
+STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'road', 'trail', 'blvd', 'pkwy'
 
 SUITE_INDICATOR_TYPES = 'suite', 'ste', '#', 'apt'
 
@@ -12,6 +11,8 @@ STREET_DIRECTIONS = 'n', 'e', 's', 'w', \
 
 HIGHWAY_NAMES = 'us', 'highway', 'hwy', 'state', 'route'
 
+BUILDING_INDICATOR_TYPES = 'building', 'bldg'
+
 # Token types
 EMPTY = 0
 STREET_NUMBER = 1
@@ -21,6 +22,11 @@ STREET_DIRECTION = 4
 STREET_TYPE = 5
 SUITE_INDICATOR = 6
 SUITE = 7
+BUILDING_INDICATOR = 8
+BUILDING_NUMBER = 9
+
+DASH = 10
+COMMA = 11
 
 ALPHA_STRING = 20
 NUMERIC_STRING = 21
@@ -36,6 +42,10 @@ ADDRESS_TOKEN_TYPES = {
     SUITE: "SUITE",
     ALPHA_STRING: "ALPHA_STRING",
     NUMERIC_STRING: "NUMERIC_STRING",
+    BUILDING_INDICATOR: "BUILDING_INDICATOR",
+    BUILDING_NUMBER: "BUILDING_NUMBER",
+    DASH: "DASH",
+    COMMA: "COMMA",
 }
 
 
@@ -49,7 +59,7 @@ def get_token_id(type_name):
     return None
 
 def normalize_address(address):
-    address = address.lower().replace('.', '').replace('-', ' ').replace('#', '').replace('.', '')
+    address = address.lower().replace('.', '').replace('-', ' - ').replace('#', ' # ').replace(',', ' , ')
     return address
 
 
@@ -70,6 +80,10 @@ def indentify_tokens(address):
             result.append(NUMERIC_STRING)
         elif(token in STREET_DIRECTIONS):
             result.append(STREET_DIRECTION)
+        elif (token == '-'):
+            result.append(DASH)
+        elif (token == ','):
+            result.append(COMMA)
         else:
             result.append(ALPHA_STRING)
 
@@ -85,6 +99,9 @@ def pretty_print(results):
     ret = ret + "]"
 
     return ret
+
+
+
 
 
 

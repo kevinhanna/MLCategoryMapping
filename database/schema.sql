@@ -34,11 +34,16 @@ CREATE TABLE listing_history (
 	listing_history_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
 
-CREATE TABLE listing_training (
-	listing_training_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	address VARCHAR(512) NOT NULL,
+CREATE TABLE street_address_training (
+	street_address_training_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	street_address VARCHAR(512) NOT NULL,
 	tokens_pickle BLOB,
 	country VARCHAR(2)
 );
 
-	
+CREATE TABLE street_address_testing (
+	street_address_testing_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	street_address VARCHAR(512) NOT NULL,
+	tokens_pickle BLOB,
+	country VARCHAR(2)
+)

@@ -21,69 +21,6 @@
 # cursor.close()
 
 
-
-# test_addresses = [
-#     "9416 HIGHWAY 6 LOOP",
-#     "8400 E Crescent Pkwy Ste 250",
-#     "400 Mack Avenue",
-#     "222 S Herlong Ave",
-#     "1526 Cortelyou Rd",
-#     "417 N Wilson St",
-#     "635 S Ellis St",
-#     "N80W14962 Appleton Ave",
-#     "800 Park Boulevard Ste 790",
-#     "102 S Broadway",
-#     "2720 Lake Wheeler Road, Suite 125",
-#     "2110 W 2nd St",
-#     "1104 Lockwood ln",
-#     "9215 SW Canyon Rd.",
-#     "4642 West Market St. Suite 155",
-#     "2600 Hitching Post Trail",
-#     "Ste. #123 345 7th St E",
-#     "#405-220 3rd Avenue South",
-#     "#405 - 220 3rd Avenue South",
-#     "6835 Dayton Springfield Road",
-#     "9436 W Lake Mead Blvd, #11F",
-#     "7080 W State Road 84 # 10",
-#     "7080 W State Road 84",
-#     "9275 Sw 152nd St # 206",
-#     "3328 Washington Road Suite D",
-#     "18579 Us Route 11",
-#     # "123 Four Five St. Building F suite 5",
-#     "222 US-70",
-# ]
-#
-# expected_results = [
-#     [au.STREET_NUMBER, au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.SUITE_INDICATOR, au.SUITE, au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.STREET_DIRECTION, au.EMPTY],
-#     [au.SUITE, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.STREET_DIRECTION, au.EMPTY, au.EMPTY],
-#     [au.SUITE, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.STREET_DIRECTION, au.EMPTY, au.EMPTY],
-#     [au.SUITE, au.STREET_NUMBER, au.STREET_NUMBER, au.HIGHWAY_NAME, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.SUITE, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.SUITE, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.EMPTY, au.EMPTY, au.EMPTY],
-#     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.EMPTY, au.EMPTY, au.EMPTY, au.EMPTY],
-# ]
-
-
 from address_classifier.address_dao import AddressDao
 
 adao = AddressDao()
@@ -168,4 +105,7 @@ training_addresses = [
      [STREET_NUMBER, STREET_DIRECTION, STREET_NAME, STREET_NAME, STREET_TYPE, SUITE]
     ]
 ]
+
+for ta in training_addresses:
+    adao.insert_listing_training(ta[0], ta[1], "US")
 
