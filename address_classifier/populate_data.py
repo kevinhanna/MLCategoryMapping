@@ -109,7 +109,13 @@ test_addresses = [
         "2720 Lake Wheeler Road, Suite 125",
         [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.COMMA, au.SUITE_INDICATOR, au.SUITE]
     ],
-        # "635 S Ellis St",
+    ["9275 Sw 152nd St # 206",
+        [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE]
+    ],
+    ["9275 Sw 152nd St, Suite #206",
+        [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.COMMA, au.SUITE_INDICATOR, au.SUITE]
+    ],
+    # "635 S Ellis St",
     # "800 Park Boulevard Ste 790",
     # "102 S Broadway",
     # "2720 Lake Wheeler Road, Suite 125",
