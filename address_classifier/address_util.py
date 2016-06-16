@@ -1,4 +1,4 @@
-MAX_TOKENS = 10
+# MAX_TOKENS = 10
 
 STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'road', 'trail', 'blvd', 'pkwy'
 
@@ -63,7 +63,7 @@ def normalize_address(address):
     return address
 
 
-def indentify_tokens(address):
+def identify_tokens(address):
 
     tokens = normalize_address(address).split()
 
@@ -87,10 +87,7 @@ def indentify_tokens(address):
         else:
             result.append(ALPHA_STRING)
 
-    return pad_to_max(result)
-
-def pad_to_max(list):
-    return list+[EMPTY]*(MAX_TOKENS-len(list))
+    return result
 
 def pretty_print(results):
     ret = "["

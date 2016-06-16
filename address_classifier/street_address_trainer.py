@@ -24,8 +24,9 @@ class StreetAddressTrainer:
         tokenized_addresses = []
 
         for address in self.training_addresses:
-            tokens = au.indentify_tokens(address['street_address'])
+            tokens = au.identify_tokens(address['street_address'])
             if (len(tokens) > self.MAX_SIZE):
+                print("New max: %s" % au.identify_tokens(address['street_address']))
                 self.MAX_SIZE = len(tokens)
                 au.MAX_TOKENS = self.MAX_SIZE  #todo combine au functionality with this file
 
@@ -39,16 +40,16 @@ class StreetAddressTrainer:
     def __generate_predictors(self):
         # predictors = [None for i in range(self.MAX_SIZE-1)]
         predictors = []
-        targets = [[] for i in range(self.MAX_SIZE-1)]#todo shouldn't need the -1
+        targets = [[] for i in range(self.MAX_SIZE)]#todo shouldn't need the -1
         street_addresses_tokenized = []
 
 
         for address in self.training_addresses:
             street_address = address['street_address']
-            street_address_tokenized = au.pad_to_max(au.indentify_tokens(street_address))
+            street_address_tokenized = self.pad_to_max(au.identify_tokens(street_address))
             street_addresses_tokenized.append(street_address_tokenized)
 
-            tokens = au.pad_to_max(address['tokens'])
+            tokens = self.pad_to_max(address['tokens'])
 
             for target, token in zip(targets, tokens):
                 target.append(token)
@@ -60,12 +61,18 @@ class StreetAddressTrainer:
 
         return predictors
 
+    def pad_to_max(self, list):
+        retval =  list + [0] * (self.MAX_SIZE - len(list))
+        return retval
 
-    # def predict(self, address):
-    #     predicteds = []
-    #     # prediteds_1 = get_token_name(classifier_1.predict([address[1]])[0])
-    #     for predictor in self.get_predictors():
-    #         predicteds.append(au.get_token_name(predictor.predict([tokened_ag_address])[0]))
+    def predict(self, address):
+        predicteds = []
+        tokened_ag_address = self.pad_to_max(au.identify_tokens(address))
+        for predictor in self.get_predictors():
+            # predicteds.append(predictor.predict(self.pad_to_max([tokened_ag_address][0])))
+            predicteds.append(predictor.predict([tokened_ag_address])[0])
+
+        return predicteds
 
 
 
