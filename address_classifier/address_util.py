@@ -2,7 +2,7 @@
 
 STREET_TYPES = 'st', 'street', 'ave', 'avenue', 'ln', 'lane', 'cres', 'crescent', 'ct', 'court', 'rd', 'road', 'trail', 'blvd', 'pkwy'
 
-SUITE_INDICATOR_TYPES = 'suite', 'ste', '#', 'apt'
+SUITE_INDICATORS = 'suite', 'ste', '#', 'apt'
 
 STREET_DIRECTIONS = 'n', 'e', 's', 'w', \
                     'north', 'east', 'south', 'west', \
@@ -11,31 +11,38 @@ STREET_DIRECTIONS = 'n', 'e', 's', 'w', \
 
 HIGHWAY_NAMES = 'us', 'highway', 'hwy', 'state', 'route'
 
-BUILDING_INDICATOR_TYPES = 'building', 'bldg'
+BUILDING_INDICATORS = 'building', 'bldg'
+
+POBOX_INDICATORS = 'p.o.', 'box'
+
 
 # Token types
 EMPTY = 0
-STREET_NUMBER = 1
-STREET_NAME = 2
-HIGHWAY_NAME = 3
-STREET_DIRECTION = 4
-STREET_TYPE = 5
-SUITE_INDICATOR = 6
-SUITE = 7
-BUILDING_INDICATOR = 8
-BUILDING_NUMBER = 9
+STREET_NUMBER = 10
+STREET_NAME = 20
+HIGHWAY_NAME = 30
+HIGHWAY_NUMBER = 40
+STREET_DIRECTION = 500
+STREET_TYPE = 60
+SUITE_INDICATOR = 70
+SUITE = 80
+BUILDING_INDICATOR = 90
+BUILDING_NUMBER = 100
+POBOX_INDICATOR = 1100
+POBOX = 1200
 
-DASH = 10
-COMMA = 11
+DASH = 200
+COMMA = 210
 
-ALPHA_STRING = 20
-NUMERIC_STRING = 21
+ALPHA_STRING = 300
+NUMERIC_STRING = 310
 
 ADDRESS_TOKEN_TYPES = {
     EMPTY: "EMPTY",
     STREET_NUMBER: "STREET_NUMBER",
     STREET_NAME: "STREET_NAME",
     HIGHWAY_NAME: "HIGHWAY_NAME",
+    HIGHWAY_NUMBER: "HIGHWAY_NUMBER",
     STREET_DIRECTION: "STREET_DIRECTION",
     STREET_TYPE: "STREET_TYPE",
     SUITE_INDICATOR: "SUITE_INDICATOR",
@@ -44,6 +51,8 @@ ADDRESS_TOKEN_TYPES = {
     NUMERIC_STRING: "NUMERIC_STRING",
     BUILDING_INDICATOR: "BUILDING_INDICATOR",
     BUILDING_NUMBER: "BUILDING_NUMBER",
+    POBOX_INDICATOR: "POBOX_INDICATOR",
+    POBOX: "POBOX",
     DASH: "DASH",
     COMMA: "COMMA",
 }
@@ -74,7 +83,7 @@ def identify_tokens(address):
             result.append(STREET_TYPE)
         elif (token in HIGHWAY_NAMES):
             result.append(HIGHWAY_NAME)
-        elif (token in SUITE_INDICATOR_TYPES):
+        elif (token in SUITE_INDICATORS):
             result.append(SUITE_INDICATOR)
         elif (token.isdigit()):
             result.append(NUMERIC_STRING)
@@ -84,6 +93,8 @@ def identify_tokens(address):
             result.append(DASH)
         elif (token == ','):
             result.append(COMMA)
+        elif (token in POBOX_INDICATORS):
+            result.append(POBOX_INDICATOR)
         else:
             result.append(ALPHA_STRING)
 
@@ -92,7 +103,10 @@ def identify_tokens(address):
 def pretty_print(results):
     ret = "["
     for result in results:
-        ret = ret + get_token_name(result) + ", "
+        try:
+            ret = ret + get_token_name(result) + ", "
+        except TypeError:
+            print ("oops: %s" % result)
     ret = ret + "]"
 
     return ret

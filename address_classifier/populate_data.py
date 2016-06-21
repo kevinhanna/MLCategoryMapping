@@ -20,10 +20,10 @@ training_addresses = [
      [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
      ],
     ["9416 HIGHWAY 6 LOOP",
-     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME]
+     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NUMBER, au.HIGHWAY_NAME]
      ],
     ["1307 State Route 1",
-     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME],
+     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NUMBER],
      ],
     ["123-345 Seventh St E",
      [au.SUITE, au.DASH, au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.STREET_DIRECTION]
@@ -31,51 +31,29 @@ training_addresses = [
     ["2720 Lake Wheeler Road, Suite 125",
      [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.COMMA, au.SUITE_INDICATOR, au.SUITE]
      ],
-    # ["7111 E McDowell Rd",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["995 W Haynes Rd",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["511 Calhoun Street",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["1201 Harvey Road",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["6614 Wisteria Drive",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["13 Morin Street",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["1307 U.S. 1",
-    #  [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME],
-    #  ],
-    # ["2727 Enterprise Parkway, Suite 200",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE],
-    #  ],
-    # ["568 Eeast Harbor St. Suite 302",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE],
-    #  ],
-    # ["568 Eeast Harbor St.",
-    #  [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE],
-    #  ],
-    # ["Ste. 123 345 7th St E",
-    #  [au.SUITE_INDICATOR, au.SUITE, au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.STREET_DIRECTION],
-    #  ],
-    # ["7080 W State Road 84 # 10",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME]
-    #  ],
-    # ["7080 W State Road 84",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME]
-    # ],
-    # ["9436 W Lake Mead Blvd, #11F",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.SUITE]
-    #  ],
-    # ["9436 W Lake Mead Blvd, Suite 11F",
-    #  [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.SUITE]
-    # ]
+    ["9275 Sw 152nd St, Suite #206",
+     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.COMMA, au.SUITE_INDICATOR, au.SUITE]
+     ],
+    ["P.O. Box 400",
+     [au.POBOX_INDICATOR, au.POBOX_INDICATOR, au.POBOX]
+     ],
+    ["1555 W Brady",
+     [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME]
+     ],
+    ["1091 Highway 24 East",
+     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NUMBER, au.STREET_DIRECTION]
+     ],
+    ["73-670 El Paseo",
+     [au.SUITE, au.DASH, au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME]
+     ],
+    ["2980 I-35",
+     [au.STREET_NUMBER, au.HIGHWAY_NAME, au.DASH, au.HIGHWAY_NUMBER]
+     ],
+    ["1215 Fry Rd. Suite D",
+     [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE]
+     ]
+
+
 ]
 
 def populate_training():
@@ -86,7 +64,7 @@ def populate_training():
 test_addresses = [
     [
         "9416 HIGHWAY 6 LOOP",
-        [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NAME, au.HIGHWAY_NAME],
+        [au.STREET_NUMBER, au.HIGHWAY_NAME, au.HIGHWAY_NUMBER, au.HIGHWAY_NAME],
     ],[
         "8400 E Crescent Pkwy Ste 250",
         [au.STREET_NUMBER, au.STREET_DIRECTION, au.STREET_NAME, au.STREET_TYPE, au.SUITE_INDICATOR, au.SUITE],
@@ -105,8 +83,7 @@ test_addresses = [
     ], [
         "N80W14962 Appleton Ave",
         [au.STREET_NUMBER, au.STREET_NAME, au.STREET_TYPE],
-    ], [
-        "2720 Lake Wheeler Road, Suite 125",
+    ], ["2720 Lake Wheeler Road, Suite 125",
         [au.STREET_NUMBER, au.STREET_NAME, au.STREET_NAME, au.STREET_TYPE, au.COMMA, au.SUITE_INDICATOR, au.SUITE]
     ],
     ["9275 Sw 152nd St # 206",
