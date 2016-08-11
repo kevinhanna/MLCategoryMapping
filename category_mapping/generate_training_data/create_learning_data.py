@@ -1,6 +1,8 @@
 import csv
-import factkey
+
 from factual import Factual
+
+from category_mapping.generate_training_data import factkey
 
 csvfile = open('data/2000FinalFactual.csv', 'r', encoding='utf-8', errors='ignore')
 outfile = open('data/2000FinalFactualMapped.csv', 'w')

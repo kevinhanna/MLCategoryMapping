@@ -7,6 +7,7 @@ __pycache__/
 factual_test.py
 plot_multilabel.py
 test.py
+test2.py
 factkey.py
 
 !mapped_factual_categories.csv
